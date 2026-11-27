@@ -1,6 +1,7 @@
 # 투명재질 복원을 위한 3D Gaussian Splatting
 
-YAICON 9th 프로젝트. [GLINT](https://github.com/youngju-na/GLINT)를 바탕으로, 장면을 **일반 GS와 광학 GS 두 집합**으로 표현하는 방법을 실험했습니다.
+YAICON 9th 프로젝트.<br>
+[GLINT](https://github.com/youngju-na/GLINT)를 바탕으로, 장면을 **일반 GS와 광학 GS 두 집합**으로 표현하는 방법을 실험했습니다.
 
 유리 장면에서는 반사된 물체가 유리 뒤에 있는 것처럼 학습되거나, 유리 표면에 색이 붙는 문제가 생깁니다. 저희는 장면의 기하와 색은 일반 GS가 맡고, 유리 표면에서 반사·투과 방향을 정하는 역할은 광학 GS가 맡도록 나눴습니다.
 
