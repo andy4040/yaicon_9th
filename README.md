@@ -92,7 +92,9 @@ YAICON 발표에 사용한 결과입니다. GLINT는 논문 보고값, Ours는 �
 
 ### 설치
 
-Linux와 NVIDIA GPU, CUDA 개발 툴킷이 필요합니다. Python 3.11 또는 3.12를 권장합니다. 렌더링은 GLINT용 gsplat과 OptiX, 학습은 `TwoSetTrainer`를 사용합니다.
+Requires Linux, an NVIDIA GPU, and the CUDA toolkit. Python 3.11 or 3.12 is recommended.
+
+Rendering: GLINT's gsplat fork + OptiX. Training: `TwoSetTrainer`.
 
 ```bash
 git clone --recursive https://github.com/andy4040/yaicon_9th.git
