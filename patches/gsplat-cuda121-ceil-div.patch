@@ -1,0 +1,170 @@
+--- a/gsplat/cuda/csrc/IntersectTile.cu
++++ b/gsplat/cuda/csrc/IntersectTile.cu
+@@ -522,7 +522,7 @@
+     );
+ 
+     constexpr unsigned int threads = 256;
+-    unsigned int blocks            = static_cast<unsigned int>(::cuda::ceil_div<int64_t>(n_elements, threads));
++    unsigned int blocks            = static_cast<unsigned int>((n_elements / threads + (n_elements % threads != 0)));
+ 
+     if(n_elements == 0)
+     {
+@@ -623,7 +623,7 @@
+ 
+         int64_t offset, count;
+         std::tie(offset, count) = chunk(n_elements, device_id);
+-        unsigned int blocks     = static_cast<unsigned int>(::cuda::ceil_div<int64_t>(count, threads));
++        unsigned int blocks     = static_cast<unsigned int>((count / threads + (count % threads != 0)));
+         if(blocks > 0)
+         {
+             AT_DISPATCH_FLOATING_TYPES(
+@@ -734,7 +734,7 @@
+     const int device_count         = static_cast<int>(c10::cuda::device_count());
+     TORCH_CHECK(device_count > 0, "PrivateUse1 intersect_tile requires at least one CUDA device");
+     const int64_t total_tile_keys = static_cast<int64_t>(I) * n_tiles;
+-    const unsigned int blocks     = static_cast<unsigned int>(::cuda::ceil_div<int64_t>(n_elements, threads));
++    const unsigned int blocks     = static_cast<unsigned int>((n_elements / threads + (n_elements % threads != 0)));
+ 
+     std::vector<int32_t *> device_counts(device_count, nullptr);
+     std::vector<int64_t *> device_cumsum(device_count, nullptr);
+@@ -999,7 +999,7 @@
+ {
+     int64_t n_elements             = isect_ids.size(0); // total number of intersections
+     constexpr unsigned int threads = 256;
+-    unsigned int blocks            = static_cast<unsigned int>(::cuda::ceil_div<int64_t>(n_elements, threads));
++    unsigned int blocks            = static_cast<unsigned int>((n_elements / threads + (n_elements % threads != 0)));
+ 
+     if(n_elements == 0)
+     {
+@@ -1054,7 +1054,7 @@
+ 
+         int64_t offset, count;
+         std::tie(offset, count) = chunk(n_elements, device_id);
+-        unsigned int blocks     = static_cast<unsigned int>(::cuda::ceil_div<int64_t>(count, threads));
++        unsigned int blocks     = static_cast<unsigned int>((count / threads + (count % threads != 0)));
+         if(blocks > 0)
+         {
+             intersect_offset_kernel<<<blocks, threads, 0, stream>>>(
+--- a/gsplat/cuda/csrc/ProjectionEWA3DGSFused.cu
++++ b/gsplat/cuda/csrc/ProjectionEWA3DGSFused.cu
+@@ -248,7 +248,7 @@
+ 
+     int64_t n_elements             = B * C * N;
+     constexpr unsigned int threads = 256;
+-    unsigned int blocks            = static_cast<unsigned int>(::cuda::ceil_div<int64_t>(n_elements, threads));
++    unsigned int blocks            = static_cast<unsigned int>((n_elements / threads + (n_elements % threads != 0)));
+ 
+     if(n_elements == 0)
+     {
+@@ -331,7 +331,7 @@
+         int64_t gaussian_offset, gaussian_count;
+         std::tie(gaussian_offset, gaussian_count) = chunk(N, device_id);
+         int64_t n_elements                        = static_cast<int64_t>(B) * C * gaussian_count;
+-        unsigned int blocks = static_cast<unsigned int>(::cuda::ceil_div<int64_t>(n_elements, threads));
++        unsigned int blocks = static_cast<unsigned int>((n_elements / threads + (n_elements % threads != 0)));
+         if(blocks > 0)
+         {
+             AT_DISPATCH_FLOATING_TYPES(
+@@ -674,7 +674,7 @@
+ 
+     int64_t n_elements             = B * C * N;
+     constexpr unsigned int threads = 256;
+-    unsigned int blocks            = static_cast<unsigned int>(::cuda::ceil_div<int64_t>(n_elements, threads));
++    unsigned int blocks            = static_cast<unsigned int>((n_elements / threads + (n_elements % threads != 0)));
+ 
+     if(n_elements == 0)
+     {
+@@ -772,7 +772,7 @@
+         int64_t gaussian_offset, gaussian_count;
+         std::tie(gaussian_offset, gaussian_count) = chunk(N, device_id);
+         int64_t n_elements                        = static_cast<int64_t>(B) * C * gaussian_count;
+-        unsigned int blocks = static_cast<unsigned int>(::cuda::ceil_div<int64_t>(n_elements, threads));
++        unsigned int blocks = static_cast<unsigned int>((n_elements / threads + (n_elements % threads != 0)));
+         if(blocks > 0)
+         {
+             AT_DISPATCH_FLOATING_TYPES(
+--- a/gsplat/cuda/csrc/QuatScaleToCovarCUDA.cu
++++ b/gsplat/cuda/csrc/QuatScaleToCovarCUDA.cu
+@@ -133,7 +133,7 @@
+ 
+     int64_t n_elements             = N;
+     constexpr unsigned int threads = 256;
+-    unsigned int blocks            = static_cast<unsigned int>(::cuda::ceil_div<int64_t>(n_elements, threads));
++    unsigned int blocks            = static_cast<unsigned int>((n_elements / threads + (n_elements % threads != 0)));
+ 
+     if(n_elements == 0)
+     {
+@@ -181,7 +181,7 @@
+ 
+         int64_t offset, count;
+         std::tie(offset, count) = chunk(n_elements, device_id);
+-        unsigned int blocks     = static_cast<unsigned int>(::cuda::ceil_div<int64_t>(count, threads));
++        unsigned int blocks     = static_cast<unsigned int>((count / threads + (count % threads != 0)));
+         if(blocks > 0)
+         {
+             AT_DISPATCH_FLOATING_TYPES(
+@@ -325,7 +325,7 @@
+ 
+     int64_t n_elements             = N;
+     constexpr unsigned int threads = 256;
+-    unsigned int blocks            = static_cast<unsigned int>(::cuda::ceil_div<int64_t>(n_elements, threads));
++    unsigned int blocks            = static_cast<unsigned int>((n_elements / threads + (n_elements % threads != 0)));
+ 
+     if(n_elements == 0)
+     {
+@@ -387,7 +387,7 @@
+ 
+         int64_t offset, count;
+         std::tie(offset, count) = chunk(n_elements, device_id);
+-        unsigned int blocks     = static_cast<unsigned int>(::cuda::ceil_div<int64_t>(count, threads));
++        unsigned int blocks     = static_cast<unsigned int>((count / threads + (count % threads != 0)));
+         if(blocks > 0)
+         {
+             AT_DISPATCH_FLOATING_TYPES(
+--- a/gsplat/cuda/csrc/SphericalHarmonicsCUDA.cu
++++ b/gsplat/cuda/csrc/SphericalHarmonicsCUDA.cu
+@@ -566,7 +566,7 @@
+     {
+         int64_t n_elements             = B * N;
+         constexpr unsigned int threads = 256;
+-        unsigned int blocks            = static_cast<unsigned int>(::cuda::ceil_div<int64_t>(n_elements, threads));
++        unsigned int blocks            = static_cast<unsigned int>((n_elements / threads + (n_elements % threads != 0)));
+ 
+         auto *masks_ptr = masks.has_value() ? masks.value().const_data_ptr<bool>() : nullptr;
+ 
+@@ -608,7 +608,7 @@
+     {
+         int64_t n_elements             = static_cast<int64_t>(B) * N * D;
+         constexpr unsigned int threads = 256;
+-        unsigned int blocks            = static_cast<unsigned int>(::cuda::ceil_div<int64_t>(n_elements, threads));
++        unsigned int blocks            = static_cast<unsigned int>((n_elements / threads + (n_elements % threads != 0)));
+ 
+         // Dispatch on the coeff dtype (fp16/fp32); dirs/colors read as opmath_t (float).
+         AT_DISPATCH_V2(
+@@ -669,7 +669,7 @@
+         int64_t gaussian_offset, gaussian_count;
+         std::tie(gaussian_offset, gaussian_count) = chunk(N, device_id);
+         int64_t n_elements                        = static_cast<int64_t>(B) * gaussian_count * D;
+-        unsigned int blocks = static_cast<unsigned int>(::cuda::ceil_div<int64_t>(n_elements, threads));
++        unsigned int blocks = static_cast<unsigned int>((n_elements / threads + (n_elements % threads != 0)));
+         if(blocks > 0)
+         {
+             AT_DISPATCH_V2(
+@@ -783,7 +783,7 @@
+     // parallelize over B * N * D
+     int64_t n_elements             = static_cast<int64_t>(B) * N * D;
+     constexpr unsigned int threads = 256;
+-    unsigned int blocks            = static_cast<unsigned int>(::cuda::ceil_div<int64_t>(n_elements, threads));
++    unsigned int blocks            = static_cast<unsigned int>((n_elements / threads + (n_elements % threads != 0)));
+ 
+     if(n_elements == 0)
+     {
+@@ -1351,7 +1351,7 @@
+         int64_t gaussian_offset, gaussian_count;
+         std::tie(gaussian_offset, gaussian_count) = chunk(N, device_id);
+         int64_t n_elements                        = static_cast<int64_t>(B) * gaussian_count * D;
+-        unsigned int blocks = static_cast<unsigned int>(::cuda::ceil_div<int64_t>(n_elements, threads));
++        unsigned int blocks = static_cast<unsigned int>((n_elements / threads + (n_elements % threads != 0)));
+         if(blocks > 0)
+         {
+             AT_DISPATCH_V2(
