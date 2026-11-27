@@ -1,4 +1,4 @@
-﻿# Source provenance
+# Source provenance
 
 This repository restores the two-set direct-beta baseline from
 [andy4040/yai5, commit 3f26fc5b3d54ce59310b4595b2e92fa70388bad5](https://github.com/andy4040/yai5/commit/3f26fc5b3d54ce59310b4595b2e92fa70388bad5).
@@ -22,7 +22,7 @@ whereas the two-set model uses `glint.train_two_set`.
 
 ## Additions in this restoration
 
-- A Korean project README and images from the supplied YAICON presentation.
+- A Korean project README based on the supplied YAICON presentation, with previously rendered confirmed optical-GS visualizations from 3D-FRONT-T.
 - `scripts/train_ref_dl3dv_two_set.py`: a portable launcher with explicit
   direct-beta mode, 5k/10k/30k/60k schedule, half-resolution images, normal prior
   weight 0.1, and validation over each configured validation split.

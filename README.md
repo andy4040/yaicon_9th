@@ -1,6 +1,4 @@
-﻿<div align="center">
-
-<img src="docs/assets/title.png" alt="YAICON 9th — 투명재질 복원을 위한 3D Gaussian Splatting" width="100%">
+<div align="center">
 
 # Two-Set Gaussian Radiance Transport
 
@@ -30,20 +28,14 @@
 
 원본 GLINT의 interface / transmission / reflection 역할 구분을 두 집합으로 재구성합니다. **반사·투과 전용 radiance Gaussian 집합을 각각 두지 않고, 두 경로가 같은 일반 GS를 조회합니다.** 광학 GS는 경로를 생성하는 공유 표면입니다. 집합 수 감소가 곧바로 실행 시간 감소를 보장하는 것은 아니며, 실제 비용은 Gaussian 수·화면상 크기·활성 광선 수에도 영향을 받습니다.
 
-```mermaid
-flowchart LR
-    I[RGB + camera + material priors] --> G[일반 GS 초기 학습]
-    G --> A[여러 시점의 낮은 diffuse albedo]
-    A --> O[광학 후보 시험 학습]
-    O --> V{RGB 오차 개선?}
-    V -->|수락| S[광학 GS]
-    V -->|기각 / 관측 부족| G
-    S --> R[반사 광선]
-    S --> T[직진 투과 광선]
-    R --> Q[공유 일반 GS 조회]
-    T --> Q
-    Q --> C[coverage와 재질 가중치로 합성]
-```
+### ??? ?? Gaussian ???
+
+??? ???? **3D-FRONT-T Scene 1?5? ?? ?? GS**???. ? ?? ??? ???, ???? **GT / ?? GS coverage ???? / ?? GS? ???**? ?????.
+
+<img src="docs/assets/confirmed-optical-gaussians.png" alt="3D-FRONT-T Scene 1?5: GT, ?? ?? Gaussian coverage ????, ?? Gaussian ?? ???" width="100%">
+
+???? ??? ?? GS ??? ?? coverage? ?????. ????????? ?? ???? ??? ??? ????. Ref-DL3DV? ?? ???? ??? ?? ?? ??????.
+
 
 ### Direct-beta 반사·투과 혼합
 
@@ -82,8 +74,6 @@ $$
 | 30,000–60,000 | 증식·제거를 종료하고 파라미터 최적화 |
 
 ## Results
-
-<img src="docs/assets/datasets.png" alt="Ref-DL3DV 실제 촬영 장면과 3D-FRONT-T 합성 장면" width="100%">
 
 ### Ref-DL3DV · 완료된 8개 씬 실험 기록
 
